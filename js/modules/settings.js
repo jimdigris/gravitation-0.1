@@ -3,6 +3,7 @@
 let canvaFon, ctxFon, fon;
 let canvaPlayer, ctxPlayer, player;
 let gravity;
+let g = 9.8;                                                                                    // ускорение свободного падения 
 
 const fonSt = {                                                                                 // стартовые настрйоки фона
     canvaParent: '.wrap',                                                                       // куда помещаем канву
@@ -22,12 +23,12 @@ const playerSt = {                                                              
     canvaId: 'canvas-player',                                                                   // id для канвы
     canvaWidth: 800,                                                                            // ширина канвы
     canvaHeight: 600,                                                                           // высота канвы
-    weight: 10,                                                                                 // вес игрока
+    weight: 40,                                                                                 // вес игрока
     width: 20,                                                                                  // ширина игрока
     height: 20,                                                                                 // высота игрока
     color: 'orange',                                                                            // цвет игрока
     step: 5,                                                                                    // размер шага передвижения
-    jumpHeight: 30,                                                                             // высота прыжка (шагов)
+    jumpHeight: 100,                                                                            // высота прыжка
     x: 40,                                                                                      // координаты игрока
     y: 340
 }

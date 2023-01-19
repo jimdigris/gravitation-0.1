@@ -47,7 +47,8 @@ class Fon {                                                                     
 }
 
 class Player {                                                                      // класс для Игрока
-    direction = null;
+    direction = null;                                                               // направление движения
+    statusJump = null;                                                              // статус прыжка (в прыжке или нет игрок)
 
     constructor(ctx, weight, width, height, color, step, jumpHeight, x, y) {
         this.ctx = ctx;                                                             // получить контекст (свой слой) для отрисовки
@@ -77,23 +78,24 @@ class Player {                                                                  
 
     performMovement(landY) {                                                                                // изменение координат при движении
         switch (this.direction) {
-            case 'up':                                                                                      // игрок подпрыгивает
-                if (this.y + this.height == landY) { this.y -= this.step * this.jumpHeight; break; }        // подпрыгивать можно только с земли
+            case 'up':                                                                                      // игрок подпрыгивает (можно только с земли)
+                if (this.y + this.height == landY) { this.statusJump = true; }                              // игрок в статусе "прыжок"
                 break;
-            case 'down': this.y += this.step; break;
             case 'left': this.x -= this.step; break;
             case 'right': this.x += this.step; break;
         }
         this.direction = null;                                                                              // сбросить направление (прошлое нажатие кн)
+
+        if ((this.statusJump) && (this.y > (landY - this.jumpHeight))) {                                    // если игрок в прыжке и не достиг пика прыжка
+            this.y -= this.weight / g + 3;                                                                  // уменьшаем координату Y
+        } else { this.statusJump = false; }                                                                 // иначе убираем статус "прыжок"
     }
 }
 
 class Gravity {                                                                     // класс для Гравитации
-    #g = 9.8;                                                                       // ускорение свободного падения 
-
     impact(obj, landY) {                                                            // воздействие гравитации на объект
         if (obj.y + obj.height < landY) {                                           // если нижняя точка игрока не на земле
-            let f = obj.weight / this.#g;                                           // рассчитаем скорость притяжения
+            let f = obj.weight / g;                                                 // рассчитаем скорость притяжения
             obj.y += f;                                                             // выполним притяжение
         }
         if (obj.y + obj.height > landY) { obj.y = landY - obj.height; }             // чтобы игрок не проваливался ниже границы земли
